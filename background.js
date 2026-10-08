@@ -19,3 +19,7 @@ async function UpdateBadge() {
 browser.browserSettings.overrideDocumentColors.onChange.addListener(UpdateBadge);
 browser.browserAction.onClicked.addListener(ToolbarButtonClicked);
 UpdateBadge();
+
+browser.commands.onCommand.addListener((name) => {
+  if (name === "toggle-colors") ToolbarButtonClicked();
+});

@@ -24,6 +24,12 @@
     "default_icon": "icons/toggleglobalcolors.svg",
     "default_title": "Real Black Mode"
   },
+  "commands": {
+  "toggle-colors": {
+    "suggested_key": { "default": "Alt+Shift+S" },
+    "description": "Toggle website colors"
+  }
+  },
     "permissions": [
     "browserSettings"
   ]
