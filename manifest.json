@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+  "name": "Real Black Mode",
+  "version": "0.11",
+  "description": "Toggles between custom and default website colors. It's a fork/retake on Toggle Website Colors (Global) by Manuel Reimer. Thanks for the base!",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "toggle-colors-nightly@local",
+    "data_collection_permissions": {
+      "required": ["none"]
+  }
+}
+  },
+  "icons": {
+    "24": "icons/toggleglobalcolors.svg",
+    "32": "icons/toggleglobalcolors.svg",
+    "50": "icons/toggleglobalcolors.svg"
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_action": {
+    "browser_style": true,
+    "default_icon": "icons/toggleglobalcolors.svg",
+    "default_title": "Real Black Mode"
+  },
+    "permissions": [
+    "browserSettings"
+  ]
+}
+
