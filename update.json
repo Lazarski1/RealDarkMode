@@ -1,0 +1,21 @@
+{
+  "addons": {
+    "toggle-colors-nightly@local": {
+      "updates": [
+        {
+          "version": "0.12",
+          "update_link": "https://lazarski1.github.io/RealDarkMode/realdarkmodev12.xpi"
+        },
+        {
+          "version": "0.13",
+          "update_link": "https://lazarski1.github.io/RealDarkMode/realdarkmodev13.xpi",
+          "applications": {
+            "gecko": {
+              "strict_min_version": "109.0"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
