@@ -1,0 +1,121 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Real Black Mode setup</title>
+<style>
+  body { background: #000000; color: #ffcc99; font-family: sans-serif; max-width: 640px; margin: 2em auto; padding: 0 1em; }
+  h2 { margin-top: 0; }
+  .row { display: flex; align-items: center; gap: 0.6em; margin: 0.6em 0; }
+  .row label { width: 11em; }
+  input[type="text"] { background: #111; color: #ffcc99; border: 1px solid #ffcc99; padding: 0.3em; width: 7em; font-family: monospace; }
+  input[type="text"].invalid { border-color: #ff4444; color: #ff4444; }
+  input[type="color"] { background: none; border: 1px solid #ffcc99; padding: 0; width: 2.4em; height: 2em; }
+  button.ui { background: #111; color: #ffcc99; border: 1px solid #ffcc99; padding: 0.5em 1em; cursor: pointer; margin: 0.8em 0.5em 0.8em 0; }
+  button.ui:hover { background: #ffcc99; color: #000; }
+  ol { line-height: 1.6; }
+
+  /* Live preview: driven by CSS variables set from options.js */
+  #preview { --pv-bg: #000000; --pv-link: #ffcc99; --pv-text: #c0c0c0; --pv-border: #c0c0c0;
+             background: var(--pv-bg); color: var(--pv-text);
+             border: 1px solid var(--pv-border); padding: 1em; margin: 1em 0; }
+  #preview h3 { margin: 0 0 0.5em; }
+  #preview a { color: var(--pv-link); text-decoration: underline; }
+  #preview button, #preview input { background: var(--pv-bg); color: var(--pv-text);
+             border: 1px solid var(--pv-border); padding: 0.3em 0.6em; font: inherit; width: auto; }
+  #preview table { border-collapse: collapse; margin-top: 0.8em; }
+  #preview td { border: 1px solid var(--pv-border); padding: 0.2em 0.8em; }
+  #preview hr { border: 0; border-top: 1px solid var(--pv-border); opacity: 1; }
+
+  #manual { border-collapse: collapse; margin: 0.6em 0; width: 100%; }
+  #manual th, #manual td { border: 1px solid #ffcc99; padding: 0.35em 0.6em; text-align: left; font-size: 0.9em; }
+  #manual code { font-family: monospace; }
+
+  /* Clickable pref name / value cells */
+  #manual code.copyable { cursor: pointer; padding: 0.1em 0.3em; border-radius: 2px; display: inline-block; }
+  #manual code.copyable:hover { background: #ffcc99; color: #000; }
+  #manual code.copyable:active { background: #ff8866; color: #000; }
+  #manual code.copyable:focus { outline: 2px solid #ffcc99; outline-offset: 1px; }
+
+  /* Explanation blocks between the table and the copy buttons */
+  .hint { border-left: 3px solid #ffcc99; padding: 0.4em 0.9em; margin: 0.9em 0;
+          font-size: 0.95em; line-height: 1.55; background: #0a0a0a; }
+  .hint code { font-family: monospace; color: #ffcc99; }
+  .hint .path { color: #ff8866; }
+
+  /* Note / disclaimer variant — orange-red bar to distinguish from .hint */
+  .note { border-left: 3px solid #ff8866; padding: 0.5em 0.9em; margin: 1em 0;
+          font-size: 0.9em; line-height: 1.55; background: #0a0505; color: #ffaa88; }
+  .note b { color: #ffcc99; }
+  .note code { font-family: monospace; color: #ffcc99; }
+
+  /* Big, obvious status line at the bottom of the page */
+  #status { display: none; margin-top: 1.2em; padding: 0.7em 0.9em;
+            border-radius: 3px; font-weight: bold; font-size: 1.05em; }
+  #status.status-ok  { display: block; background: #0d2b0d; color: #7dff7d; border: 1px solid #7dff7d; }
+  #status.status-err { display: block; background: #2b0d0d; color: #ff7d7d; border: 1px solid #ff7d7d; }
+</style>
+
+<h2>Real Black Mode setup</h2>
+
+<div class="note">
+  <p><b>Why a .bat?</b> Firefox blocks extensions from changing the prefs below at the plugin level — there's no WebExtension API for <code>browser.display.*</code> / <code>browser.anchor_color</code>. It's technically possible with an external native-messaging host (a small Python or Go helper), but that would require installing a second program. A one-shot <code>.bat</code> keeps the setup to a single file you can read and delete afterwards.</p>
+  <p><b>Don't want to run a .bat?</b> You can skip it entirely — see <b>Manual setup</b> further down for the two ways to set these prefs by hand.</p>
+</div>
+
+<p>One-time step: download a script that writes these color prefs to your Firefox profile.</p>
+
+<div class="row">
+  <label for="bg">Background color</label>
+  <input type="color" id="bg_picker"><input type="text" id="bg" maxlength="7">
+</div>
+<div class="row">
+  <label for="link">Link color</label>
+  <input type="color" id="link_picker"><input type="text" id="link" maxlength="7">
+</div>
+<div class="row">
+  <label for="fg">Text &amp; border color</label>
+  <input type="color" id="fg_picker"><input type="text" id="fg" maxlength="7">
+</div>
+
+<div id="preview">
+  <h3>Live preview</h3>
+  <p>Sample paragraph text with a <a href="#" onclick="return false">sample link</a> inside it.</p>
+  <hr>
+  <input type="text" value="Text field" readonly>
+  <button type="button">Button</button>
+  <table><tr><td>Cell A</td><td>Cell B</td></tr></table>
+</div>
+
+<button class="ui" id="setup">Download setup script</button>
+<button class="ui" id="reset">Reset to defaults</button>
+
+<ol>
+  <li>Adjust the values above, then click <b>Download setup script</b>.</li>
+  <li>Open <b>colortoggle-setup.bat</b> from your Downloads folder.</li>
+  <li>If Windows shows "Windows protected your PC", click <b>More info → Run anyway</b>.</li>
+  <li>Restart Firefox.</li>
+</ol>
+
+<h3>Manual setup (no .bat)</h3>
+
+<div class="note">
+  <p><b>You don't have to run the .bat at all.</b> Anything it does, you can do by hand — the two options below do the same thing, just with more clicking. Pick whichever you're comfortable with.</p>
+</div>
+
+<p>Open <b>about:config</b>, search for each name, and set the value. If a pref doesn't exist, click the <b>+</b> button, pick the type shown, and enter the value without quotes. Click any highlighted name or value below to copy it.</p>
+<table id="manual">
+  <thead><tr><th>Pref name</th><th>Type</th><th>Value</th></tr></thead>
+  <tbody id="manual_body"></tbody>
+</table>
+
+<div class="hint">
+  <p><b>Two ways to use these values — pick one:</b></p>
+  <p><b>1. user.js (recommended).</b> Click <b>Copy all as user.js lines</b> below, open the profile folder path (use the second button to copy it, then paste into Explorer's address bar), create a file named <code>user.js</code> if it doesn't already exist, and paste the lines at the end. These prefs are reapplied every time Firefox starts, so they survive updates.</p>
+  <p><b>2. about:config (one-off).</b> Paste each name and value directly into <code>about:config</code> using the <b>+</b> button. Simpler, but values can be reset by Firefox on updates. The path <code class="path">%APPDATA%\Mozilla\Firefox\Profiles</code> is where <code>user.js</code> lives — copy it with the button below, then paste it into Explorer's address bar.</p>
+</div>
+
+<button class="ui" id="copy_all">Copy all as user.js lines</button>
+<button class="ui" id="copyfolder">Copy profile folder path</button>
+
+<div id="status"></div>
+
+<script src="options.js"></script>

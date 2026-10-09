@@ -1,11 +1,11 @@
 {
   "manifest_version": 2,
   "name": "Real Black Mode",
-  "version": "0.11",
+  "version": "1.0",
   "description": "Toggles between custom and default website colors. It's a fork/retake on Toggle Website Colors (Global) by Manuel Reimer. Thanks for the base!",
   "browser_specific_settings": {
     "gecko": {
-      "id": "toggle-colors-nightly@local",
+      "id": "realdarkmode@beta",
       "data_collection_permissions": {
         "required": ["none"]
       }
@@ -28,9 +28,15 @@
     "toggle-colors": {
       "suggested_key": { "default": "Alt+Q" },
       "description": "Toggle website colors"
+    },
+    "open-options": {
+      "suggested_key": { "default": "Alt+Shift+Q" },
+      "description": "Open Real Black Mode options"
     }
   },
-  "permissions": [
-    "browserSettings"
-  ]
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "permissions": ["browserSettings", "downloads", "menus"]
 }
