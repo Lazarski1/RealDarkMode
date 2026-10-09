@@ -6,10 +6,10 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "toggle-colors-nightly@local",
-    "data_collection_permissions": {
-      "required": ["none"]
-  }
-}
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
   },
   "icons": {
     "24": "icons/toggleglobalcolors.svg",
@@ -25,13 +25,12 @@
     "default_title": "Real Black Mode"
   },
   "commands": {
-  "toggle-colors": {
-    "suggested_key": { "default": "Alt+Q" },
-    "description": "Toggle website colors"
-  }
+    "toggle-colors": {
+      "suggested_key": { "default": "Alt+Q" },
+      "description": "Toggle website colors"
+    }
   },
-    "permissions": [
+  "permissions": [
     "browserSettings"
   ]
 }
-
